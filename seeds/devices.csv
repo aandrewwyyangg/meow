@@ -1,0 +1,9 @@
+device_id,device_type,platform_family
+DEV-01,Smart TV,TV
+DEV-02,Mobile Phone,Mobile
+DEV-03,Tablet,Mobile
+DEV-04,Web Browser,Desktop
+DEV-05,Streaming Stick,TV
+DEV-06,Game Console,TV
+DEV-07,Set-Top Box,TV
+DEV-08,Laptop App,Desktop

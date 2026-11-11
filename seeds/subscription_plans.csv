@@ -1,0 +1,5 @@
+plan_id,plan_name,monthly_price,max_concurrent_streams,max_resolution,has_ads,billing_cycle
+PLN-01,Basic with Ads,7.99,1,720p,Y,Monthly
+PLN-02,Standard,15.49,2,1080p,N,Monthly
+PLN-03,Premium,22.99,4,4K,N,Monthly
+PLN-04,Premium Annual,19.99,4,4K,N,Annual

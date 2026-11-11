@@ -1,0 +1,14 @@
+version: 2
+
+sources:
+  - name: meow
+    schema: ehl495
+    tables:
+      - name: addon_packages
+      - name: venues
+      - name: performances
+      - name: tickets
+      - name: purchases
+      - name: people
+      - name: content_catalog
+      - name: subscribers
