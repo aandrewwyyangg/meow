@@ -7,4 +7,4 @@ SELECT
     runtime_minutes,
     package_id,
     added_to_catalog_date
-FROM {{ source('meow', 'content_catalog') }}
+FROM {{ ref('content_catalog') }}

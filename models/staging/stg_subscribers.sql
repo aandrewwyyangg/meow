@@ -10,4 +10,4 @@ SELECT
     cancel_date,
     marketing_opt_in,
     current_plan_id
-FROM {{ source('meow', 'subscribers') }}
+FROM {{ ref('subscribers') }}
