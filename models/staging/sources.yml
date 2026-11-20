@@ -1,14 +1,88 @@
 version: 2
 
 sources:
-  - name: meow
-    schema: ehl495
+  - name: staging
+    schema: cmp4754
+    description: "Raw CSV data for the Meow streaming project, loaded without transformations."
+
     tables:
-      - name: addon_packages
-      - name: venues
-      - name: performances
-      - name: tickets
-      - name: purchases
-      - name: people
-      - name: content_catalog
       - name: subscribers
+        description: "One row per subscriber record, containing personal information, subscription status, and current plan."
+        columns:
+          - name: subscriber_id
+            description: "Identifier for a subscriber."
+            data_tests:
+              - not_null
+              # - unique  # Known duplicates in source data
+
+      - name: subscription_plans
+        description: "One row per subscription plan, including pricing, resolution, and streaming limits."
+        columns:
+          - name: plan_id
+            description: "Unique identifier for a subscription plan."
+            data_tests:
+              - not_null
+              - unique
+
+      - name: plan_history
+        description: "One row per subscriber plan history record, tracking plan changes over time."
+        columns:
+          - name: history_id
+            description: "Unique identifier for a plan history record."
+            data_tests:
+              - not_null
+              - unique
+
+      - name: addon_packages
+        description: "One row per optional streaming add-on package, including its price and description."
+        columns:
+          - name: package_id
+            description: "Unique identifier for an add-on package."
+            data_tests:
+              - not_null
+              - unique
+
+      - name: subscriber_addons
+        description: "One row per subscriber add-on subscription, including start and end dates."
+        columns:
+          - name: subscriber_package_id
+            description: "Unique identifier for a subscriber add-on record."
+            data_tests:
+              - not_null
+              - unique
+
+      - name: content_catalog
+        description: "One row per streaming content title, including genre, content type, release year, and runtime."
+        columns:
+          - name: content_id
+            description: "Unique identifier for a streaming content title."
+            data_tests:
+              - not_null
+              - unique
+
+      - name: genres
+        description: "One row per content genre."
+        columns:
+          - name: genre_id
+            description: "Unique identifier for a genre."
+            data_tests:
+              - not_null
+              - unique
+
+      - name: devices
+        description: "One row per supported device type and platform."
+        columns:
+          - name: device_id
+            description: "Unique identifier for a device type."
+            data_tests:
+              - not_null
+              - unique
+
+      - name: viewing_events
+        description: "One row per viewing event, including subscriber, content, device, timestamp, and viewing activity."
+        columns:
+          - name: view_id
+            description: "Identifier for a viewing event."
+            data_tests:
+              - not_null
+              # - unique  # Known duplicates in source data

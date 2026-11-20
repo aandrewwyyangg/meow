@@ -1,0 +1,64 @@
+-- ============================================================================
+-- STARTER SNIPPET 2 of 4 : bulk load with psql \copy   (Entertainment (Streaming))
+-- \copy is a psql CLIENT-side meta-command: the file path is resolved on YOUR
+-- machine, relative to the folder where you launch psql. Launch psql from the
+-- project root so 'data/...' resolves:
+--   psql -h <HOST> -U <YOUR_ROLE> -d dataeng -f starter/02_load_starter.psql
+-- The CSV files have a header row, and column order matches the files exactly.
+-- Empty (unquoted) fields in CSV format are loaded as NULL.
+-- ============================================================================
+
+-- TODO: add a TRUNCATE + \copy pair for every other table.
+
+\set ON_ERROR_STOP on
+
+BEGIN;
+
+-- 1. Subscribers
+\echo Loading cmp4754.subscribers ...
+TRUNCATE TABLE cmp4754.subscribers;
+\copy cmp4754.subscribers FROM 'seeds/subscribers.csv' WITH (FORMAT csv, HEADER true, NULL '')
+
+-- 2. Subscription Plans
+\echo Loading cmp4754.subscription_plans ...
+TRUNCATE TABLE cmp4754.subscription_plans;
+\copy cmp4754.subscription_plans FROM 'seeds/subscription_plans.csv' WITH (FORMAT csv, HEADER true, NULL '')
+
+-- 3. Plan History
+\echo Loading cmp4754.plan_history ...
+TRUNCATE TABLE cmp4754.plan_history;
+\copy cmp4754.plan_history FROM 'seeds/plan_history.csv' WITH (FORMAT csv, HEADER true, NULL '')
+
+-- 4. Addon Packages
+\echo Loading cmp4754.addon_packages ...
+TRUNCATE TABLE cmp4754.addon_packages;
+\copy cmp4754.addon_packages FROM 'seeds/addon_packages.csv' WITH (FORMAT csv, HEADER true, NULL '')
+
+-- 5. Subscriber Addons
+\echo Loading cmp4754.subscriber_addons ...
+TRUNCATE TABLE cmp4754.subscriber_addons;
+\copy cmp4754.subscriber_addons FROM 'seeds/subscriber_addons.csv' WITH (FORMAT csv, HEADER true, NULL '')
+
+-- 6. Content Catalog
+\echo Loading cmp4754.content_catalog ...
+TRUNCATE TABLE cmp4754.content_catalog;
+\copy cmp4754.content_catalog FROM 'seeds/content_catalog.csv' WITH (FORMAT csv, HEADER true, NULL '')
+
+-- 7. Genres
+\echo Loading cmp4754.genres ...
+TRUNCATE TABLE cmp4754.genres;
+\copy cmp4754.genres FROM 'seeds/genres.csv' WITH (FORMAT csv, HEADER true, NULL '')
+
+-- 8. Devices
+\echo Loading cmp4754.devices ...
+TRUNCATE TABLE cmp4754.devices;
+\copy cmp4754.devices FROM 'seeds/devices.csv' WITH (FORMAT csv, HEADER true, NULL '')
+
+-- 9. Viewing Events
+\echo Loading cmp4754.viewing_events ...
+TRUNCATE TABLE cmp4754.viewing_events;
+\copy cmp4754.viewing_events FROM 'seeds/viewing_events.csv' WITH (FORMAT csv, HEADER true, NULL '')
+
+COMMIT;
+
+\echo All CSV files loaded successfully!
