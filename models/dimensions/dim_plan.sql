@@ -6,4 +6,4 @@ SELECT
     max_resolution,
     has_ads,
     billing_cycle
-FROM {{ ref('subscription_plans') }}
+FROM {{ source('staging', 'subscription_plans') }}
