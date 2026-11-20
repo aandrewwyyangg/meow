@@ -1,0 +1,315 @@
+     table_name      | row_count 
+---------------------+-----------
+ staging.subscribers |      2506
+(1 row)
+
+ subscriber_id | first_name | last_name |           email            | country | birth_year | signup_date | subscription_status | cancel_date | marketing_opt_in | current_plan_id 
+---------------+------------+-----------+----------------------------+---------+------------+-------------+---------------------+-------------+------------------+-----------------
+ SUB-000001    | Elena      | Nguyen    | elena.nguyen1@example.com  | US      |       1987 | 2021-07-11  | Active              |             | N                | PLN-04
+ SUB-000002    | Wei        | Harris    | wei.harris2@example.com    | US      |       1975 | 2024-09-05  | Active              |             | Y                | PLN-02
+ SUB-000003    | Carter     | Clark     | carter.clark3@example.com  | MX      |       1979 | 2024-08-28  | Paused              |             | Y                | PLN-03
+ SUB-000004    | James      | Patel     | james.patel4@example.com   | US      |       1990 | 2025-11-06  | Active              |             | Y                | PLN-02
+ SUB-000005    | Yara       | Anderson  | yara.anderson5@example.com | US      |       1983 | 2024-07-31  | Active              |             | Y                | PLN-02
+ SUB-000006    | Mia        | Garcia    |                            | US      |       2000 | 2023-12-29  | Active              |             | N                | PLN-03
+ SUB-000007    | Keiko      | Ali       | keiko.ali7@example.com     | US      |       1955 | 2026-03-25  | Active              |             | N                | PLN-03
+ SUB-000008    | Mia        | Perez     | mia.perez8@example.com     | US      |       1989 | 2025-04-28  | Active              |             | N                | PLN-02
+ SUB-000009    | Maya       | King      | maya.king9@example.com     | US      |       1985 | 2022-04-26  | Active              |             | Y                | PLN-01
+ SUB-000010    | Elijah     | Jones     | elijah.jones10@example.com | US      |       1990 | 2024-10-26  | Active              |             | Y                | PLN-04
+(10 rows)
+
+ subscriber_id_nulls | first_name_nulls | last_name_nulls | email_nulls | country_nulls | birth_year_nulls | signup_date_nulls | subscription_status_nulls | cancel_date_nulls | marketing_opt_in_nulls | current_plan_id_nulls 
+---------------------+------------------+-----------------+-------------+---------------+------------------+-------------------+---------------------------+-------------------+------------------------+-----------------------
+                   0 |                0 |               0 |          75 |             0 |                0 |                 0 |                         0 |              2181 |                      0 |                     0
+(1 row)
+
+ subscriber_id | copies 
+---------------+--------
+ SUB-002113    |      2
+ SUB-000120    |      2
+ SUB-001626    |      2
+ SUB-001540    |      2
+ SUB-000954    |      2
+ SUB-000875    |      2
+(6 rows)
+
+     table_name     | row_count 
+--------------------+-----------
+ subscribers        |      2506
+ subscription_plans |         4
+ plan_history       |      3594
+ addon_packages     |         6
+ subscriber_addons  |      1995
+ content_catalog    |       400
+ genres             |        12
+ devices            |         8
+ viewing_events     |     32395
+(9 rows)
+
+ subscriber_id | first_name | last_name |           email            | country | birth_year | signup_date | subscription_status | cancel_date | marketing_opt_in | current_plan_id 
+---------------+------------+-----------+----------------------------+---------+------------+-------------+---------------------+-------------+------------------+-----------------
+ SUB-000001    | Elena      | Nguyen    | elena.nguyen1@example.com  | US      |       1987 | 2021-07-11  | Active              |             | N                | PLN-04
+ SUB-000002    | Wei        | Harris    | wei.harris2@example.com    | US      |       1975 | 2024-09-05  | Active              |             | Y                | PLN-02
+ SUB-000003    | Carter     | Clark     | carter.clark3@example.com  | MX      |       1979 | 2024-08-28  | Paused              |             | Y                | PLN-03
+ SUB-000004    | James      | Patel     | james.patel4@example.com   | US      |       1990 | 2025-11-06  | Active              |             | Y                | PLN-02
+ SUB-000005    | Yara       | Anderson  | yara.anderson5@example.com | US      |       1983 | 2024-07-31  | Active              |             | Y                | PLN-02
+ SUB-000006    | Mia        | Garcia    |                            | US      |       2000 | 2023-12-29  | Active              |             | N                | PLN-03
+ SUB-000007    | Keiko      | Ali       | keiko.ali7@example.com     | US      |       1955 | 2026-03-25  | Active              |             | N                | PLN-03
+ SUB-000008    | Mia        | Perez     | mia.perez8@example.com     | US      |       1989 | 2025-04-28  | Active              |             | N                | PLN-02
+ SUB-000009    | Maya       | King      | maya.king9@example.com     | US      |       1985 | 2022-04-26  | Active              |             | Y                | PLN-01
+ SUB-000010    | Elijah     | Jones     | elijah.jones10@example.com | US      |       1990 | 2024-10-26  | Active              |             | Y                | PLN-04
+(10 rows)
+
+ plan_id |   plan_name    | monthly_price | max_concurrent_streams | max_resolution | has_ads | billing_cycle 
+---------+----------------+---------------+------------------------+----------------+---------+---------------
+ PLN-01  | Basic with Ads |          7.99 |                      1 | 720p           | Y       | Monthly
+ PLN-02  | Standard       |         15.49 |                      2 | 1080p          | N       | Monthly
+ PLN-03  | Premium        |         22.99 |                      4 | 4K             | N       | Monthly
+ PLN-04  | Premium Annual |         19.99 |                      4 | 4K             | N       | Annual
+(4 rows)
+
+ history_id | subscriber_id | plan_id | start_date |  end_date  
+------------+---------------+---------+------------+------------
+ PLH-000001 | SUB-000001    | PLN-02  | 2021-07-11 | 2025-06-23
+ PLH-000002 | SUB-000001    | PLN-04  | 2025-06-23 | 
+ PLH-000003 | SUB-000002    | PLN-02  | 2024-09-05 | 
+ PLH-000004 | SUB-000003    | PLN-03  | 2024-08-28 | 
+ PLH-000005 | SUB-000004    | PLN-02  | 2025-11-06 | 
+ PLH-000006 | SUB-000005    | PLN-02  | 2024-07-31 | 
+ PLH-000007 | SUB-000006    | PLN-03  | 2023-12-29 | 
+ PLH-000008 | SUB-000007    | PLN-02  | 2026-03-25 | 2026-06-10
+ PLH-000009 | SUB-000007    | PLN-03  | 2026-06-10 | 
+ PLH-000010 | SUB-000008    | PLN-02  | 2025-04-28 | 
+(10 rows)
+
+ package_id |   package_name   | monthly_price |              description              
+------------+------------------+---------------+---------------------------------------
+ PKG-01     | Sports Pass      |          9.99 | Live and on-demand sports programming
+ PKG-02     | Kids Zone        |          4.99 | Ad-free children's series and films
+ PKG-03     | Documentary Plus |          5.99 | Award-winning documentary library
+ PKG-04     | Anime Hub        |          6.99 | Subbed and dubbed anime series
+ PKG-05     | Premium Movies   |          8.99 | New-release feature films
+ PKG-06     | Global Cinema    |          5.99 | International films and series
+(6 rows)
+
+ subscriber_package_id | subscriber_id | package_id | start_date |  end_date  
+-----------------------+---------------+------------+------------+------------
+ SPK-000001            | SUB-000001    | PKG-05     | 2021-11-05 | 
+ SPK-000002            | SUB-000006    | PKG-03     | 2025-07-29 | 
+ SPK-000003            | SUB-000010    | PKG-02     | 2025-02-02 | 
+ SPK-000004            | SUB-000010    | PKG-03     | 2026-03-10 | 
+ SPK-000005            | SUB-000011    | PKG-05     | 2026-07-09 | 
+ SPK-000006            | SUB-000014    | PKG-04     | 2024-07-02 | 2025-01-15
+ SPK-000007            | SUB-000015    | PKG-04     | 2026-05-04 | 
+ SPK-000008            | SUB-000015    | PKG-05     | 2024-08-27 | 
+ SPK-000009            | SUB-000017    | PKG-05     | 2025-04-22 | 2026-03-30
+ SPK-000010            | SUB-000018    | PKG-01     | 2024-07-17 | 2024-12-21
+(10 rows)
+
+ content_id |     title     |    content_type     | genre_id | release_year | maturity_rating | runtime_minutes | package_id | added_to_catalog_date 
+------------+---------------+---------------------+----------+--------------+-----------------+-----------------+------------+-----------------------
+ CNT-0001   | Wild Signal   | Documentary Special | GEN-05   |         2019 | PG-13           |              63 |            | 2022-12-07
+ CNT-0002   | Iron Tides    | Movie               | GEN-11   |         2022 | PG-13           |             119 | PKG-06     | 2026-07-12
+ CNT-0003   | Final Signal  | Documentary Special | GEN-09   |         2026 | PG-13           |              90 | PKG-04     | 2024-09-19
+ CNT-0004   | Quiet Bloom   | Documentary Special | GEN-01   |         2016 | PG-13           |              57 |            | 2022-08-13
+ CNT-0005   | Paper Archive | Movie               | GEN-01   |         2024 | TV-14           |             118 |            | 2025-01-27
+ CNT-0006   | Final Circuit | Series              | GEN-12   |         2011 | TV-14           |              33 |            | 2024-12-11
+ CNT-0007   | Broken Mirror | Series              | GEN-09   |         2026 | TV-14           |              58 |            | 2024-03-18
+ CNT-0008   | Last Garden   | Series              | GEN-07   |         2024 | TV-MA           |              37 |            | 2022-04-16
+ CNT-0009   | Frozen Signal | Stand-up Special    | GEN-11   |         2021 | PG-13           |              68 | PKG-06     | 2026-06-05
+ CNT-0010   | Last Signal   | Series              | GEN-01   |         2016 | PG              |              23 |            | 2026-08-05
+(10 rows)
+
+ genre_id |  genre_name   
+----------+---------------
+ GEN-01   | Drama
+ GEN-02   | Comedy
+ GEN-03   | Action
+ GEN-04   | Sci-Fi
+ GEN-05   | Horror
+ GEN-06   | Romance
+ GEN-07   | Documentary
+ GEN-08   | Kids & Family
+ GEN-09   | Anime
+ GEN-10   | Sports
+(10 rows)
+
+ device_id |   device_type   | platform_family 
+-----------+-----------------+-----------------
+ DEV-01    | Smart TV        | TV
+ DEV-02    | Mobile Phone    | Mobile
+ DEV-03    | Tablet          | Mobile
+ DEV-04    | Web Browser     | Desktop
+ DEV-05    | Streaming Stick | TV
+ DEV-06    | Game Console    | TV
+ DEV-07    | Set-Top Box     | TV
+ DEV-08    | Laptop App      | Desktop
+(8 rows)
+
+   view_id   | subscriber_id | content_id | device_id |    view_start_ts    | minutes_watched | completion_ratio 
+-------------+---------------+------------+-----------+---------------------+-----------------+------------------
+ VWE-0000001 | SUB-000727    | CNT-0382   | DEV-02    | 2026-07-01 08:08:33 |              58 |           1.0000
+ VWE-0000002 | SUB-001393    | CNT-0155   | DEV-04    | 2026-07-01 08:11:55 |             138 |           1.0000
+ VWE-0000003 | SUB-002080    | CNT-0268   | DEV-02    | 2026-07-01 08:12:05 |              36 |           1.0000
+ VWE-0000004 | SUB-000333    | CNT-0053   | DEV-08    | 2026-07-01 08:17:06 |             146 |           1.0000
+ VWE-0000005 | SUB-000833    | CNT-0231   | DEV-03    | 2026-07-01 08:19:04 |              32 |           1.0000
+ VWE-0000006 | SUB-000593    | CNT-0273   | DEV-07    | 2026-07-01 08:26:41 |              96 |           0.8500
+ VWE-0000007 | SUB-000773    | CNT-0281   | DEV-08    | 2026-07-01 08:35:34 |              85 |           0.9400
+ VWE-0000008 | SUB-001657    | CNT-0115   | DEV-07    | 2026-07-01 08:41:20 |              40 |           1.0000
+ VWE-0000009 | SUB-000142    | CNT-0247   | DEV-04    | 2026-07-01 08:47:23 |              36 |           0.2800
+ VWE-0000010 | SUB-002107    | CNT-0342   | DEV-03    | 2026-07-01 08:49:21 |              33 |           0.8700
+(10 rows)
+
+ subscriber_id_nulls | first_name_nulls | last_name_nulls | email_nulls | country_nulls | birth_year_nulls | signup_date_nulls | subscription_status_nulls | cancel_date_nulls | marketing_opt_in_nulls | current_plan_id_nulls 
+---------------------+------------------+-----------------+-------------+---------------+------------------+-------------------+---------------------------+-------------------+------------------------+-----------------------
+                   0 |                0 |               0 |          75 |             0 |                0 |                 0 |                         0 |              2181 |                      0 |                     0
+(1 row)
+
+ subscriber_id | copies 
+---------------+--------
+ SUB-002113    |      2
+ SUB-000120    |      2
+ SUB-001626    |      2
+ SUB-001540    |      2
+ SUB-000954    |      2
+ SUB-000875    |      2
+(6 rows)
+
+ plan_id | copies 
+---------+--------
+(0 rows)
+
+ history_id | copies 
+------------+--------
+(0 rows)
+
+ package_id | copies 
+------------+--------
+(0 rows)
+
+ subscriber_package_id | copies 
+-----------------------+--------
+(0 rows)
+
+ content_id | copies 
+------------+--------
+(0 rows)
+
+ genre_id | copies 
+----------+--------
+(0 rows)
+
+ device_id | copies 
+-----------+--------
+(0 rows)
+
+   view_id   | copies 
+-------------+--------
+ VWE-0025174 |      2
+ VWE-0001651 |      2
+ VWE-0021538 |      2
+ VWE-0012315 |      2
+ VWE-0012761 |      2
+ VWE-0008715 |      2
+ VWE-0032273 |      2
+ VWE-0008316 |      2
+ VWE-0028602 |      2
+ VWE-0011553 |      2
+ VWE-0007609 |      2
+ VWE-0016816 |      2
+ VWE-0019938 |      2
+ VWE-0009756 |      2
+ VWE-0010362 |      2
+ VWE-0030178 |      2
+ VWE-0010476 |      2
+ VWE-0014408 |      2
+ VWE-0028045 |      2
+ VWE-0029732 |      2
+ VWE-0014443 |      2
+ VWE-0028135 |      2
+ VWE-0003097 |      2
+ VWE-0028371 |      2
+ VWE-0031767 |      2
+ VWE-0003912 |      2
+ VWE-0005989 |      2
+ VWE-0028772 |      2
+ VWE-0011137 |      2
+ VWE-0002414 |      2
+ VWE-0028719 |      2
+ VWE-0009999 |      2
+ VWE-0025729 |      2
+ VWE-0008688 |      2
+ VWE-0006021 |      2
+ VWE-0016069 |      2
+ VWE-0023508 |      2
+ VWE-0004319 |      2
+ VWE-0020928 |      2
+ VWE-0000178 |      2
+(40 rows)
+
+ subscription_status | count 
+---------------------+-------
+ Active              |  2005
+ Cancelled           |   321
+ Paused              |   150
+ ACTIVE              |    12
+ active              |    12
+ CANCELLED           |     4
+ PAUSED              |     2
+(7 rows)
+
+ marketing_opt_in | count 
+------------------+-------
+ Y                |  1358
+ N                |  1148
+(2 rows)
+
+    content_type     | count 
+---------------------+-------
+ Movie               |   179
+ Series              |   163
+ Documentary Special |    48
+ Stand-up Special    |    10
+(4 rows)
+
+   device_type   | count 
+-----------------+-------
+ Game Console    |     1
+ Laptop App      |     1
+ Tablet          |     1
+ Smart TV        |     1
+ Mobile Phone    |     1
+ Web Browser     |     1
+ Streaming Stick |     1
+ Set-Top Box     |     1
+(8 rows)
+
+ missing_subscribers 
+---------------------
+                   0
+(1 row)
+
+ missing_content 
+-----------------
+               0
+(1 row)
+
+ missing_devices 
+-----------------
+               0
+(1 row)
+
+ missing_plans 
+---------------
+             0
+(1 row)
+
+ missing_history_subscribers 
+-----------------------------
+                           0
+(1 row)
+
+ missing_addon_packages 
+------------------------
+                      0
+(1 row)
+
