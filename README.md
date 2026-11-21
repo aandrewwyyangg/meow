@@ -19,12 +19,12 @@ A subscription streaming service wants to know how customers use its plans and a
 |---|---|
 | Caitlyn Pratt | caitlyn-p |
 | Inchara Kashyap | inchara-kashyap |
-| Eddie Lin | eddiehlin |
+| Edward Lin | eddiehlin |
 | Andrew Yang | aandrewwyyangg |
 
 ## Data sources
 
-The course instructor provided nine CSV files found in `seeds/`. Each file has a header row. Viewing events cover 2026-07-01 to 2026-10-31. Subscriptions and plan history go back to 2019. The project's as-of date is 2026-10-31.
+9 CSV files are found in `seeds/`. Each file has a header row. Viewing events cover 2026-07-01 to 2026-10-31. Subscriptions and plan history go back to 2019. The project's as-of date is 2026-10-31.
 
 | File | Rows | One row per |
 |---|---|---|
@@ -38,13 +38,22 @@ The course instructor provided nine CSV files found in `seeds/`. Each file has a
 | devices.csv | 8 | device type |
 | viewing_events.csv | 32,395 | source viewing record (32,355 distinct view IDs) |
 
+Column definitions, keys, and data quality notes are in [data_dictionary.md](data_dictionary.md).
+
+## Prerequisites
+
+- Access to the course PostgreSQL server: host `info-smith-i320.inf.utexas.edu`, port `5432`, database `postgres`.
+- The UT VPN (`vpn.utexas.edu`) if off campus.
+- A JupyterHub account.
+- A Superset account.
+
 ## Pipeline
 
 ```
 seeds/*.csv
   -> starter_files/02_load_starter.psql (psql \copy)
   -> raw tables in schema cmp4754
-  -> models/dimensions (dbt views: 8 dimensions and fact_viewing_events)
+  -> models/dimensions (dbt views: the dimensions and fact_viewing_events)
   -> models/products (dbt views for the business questions)
   -> Superset charts
 ```
@@ -56,7 +65,7 @@ The conceptual and physical ER diagrams of the star schema are in `diagrams/`.
 ```
 meow/
   README.md
-  docs/data_dictionary.md        tables, models, columns, and data quality notes
+  data_dictionary.md             tables, models, columns, and data quality notes
   seeds/                         the 9 source CSV files
   starter_files/
     01_create_staging_starter.sql    creates schema cmp4754 and the 9 raw tables
@@ -65,7 +74,7 @@ meow/
   verification_results.txt       saved output of 03_verify_starter.sql
   models/
     staging/                     stg_ views over the raw tables
-    dimensions/                  sources.yml, 8 dimensions, and the fact table
+    dimensions/                  sources.yml, the dimension models, and the fact table
     products/                    data products for the business questions
   diagrams/                      conceptual and physical ER diagrams
   dbt_project.yml
@@ -103,11 +112,9 @@ psql -h info-smith-i320.inf.utexas.edu -p 5432 -U YOUR_DB_USER -d postgres -f st
 psql -h info-smith-i320.inf.utexas.edu -p 5432 -U YOUR_DB_USER -d postgres -f starter_files/03_verify_starter.sql
 ```
 
-`01_create_staging_starter.sql` creates the schema and the nine raw tables. 
+`01_create_staging_starter.sql` creates the schema and the nine raw tables. It drops and recreates `subscribers`, so run it only on a fresh schema.
 
-`02_load_starter.psql` truncates all nine raw tables and reloads them from the CSVs in one transaction.
-
-In `03_verify_starter.sql`, the first four queries are the instructor's starter examples against `staging.subscribers`. The project's checks start at the section `ROW COUNTS FOR ALL NINE TABLES`. In the output, that section begins with the nine-row table of row counts and the same table that starts at line 35 of `verification_results.txt`. Compare the rest of the output from that point.
+In `03_verify_starter.sql`, the first four queries are the instructor's starter examples against `staging.subscribers`. The project's checks start at the section `ROW COUNTS FOR ALL NINE TABLES`. In the output, that section begins with the nine-row table of row counts, which matches the table that starts at line 35 of `verification_results.txt`. Compare the rest of the output from that point.
 
 ### 4. Configure dbt
 
@@ -145,12 +152,11 @@ dbt test
 
 ### 6. Check the results
 
-- **Raw tables:** the row counts should match the nine-row table at line 35 of `verification_results.txt`, the team's saved output from the course database.
-- **Models:** expected row counts for the dimensional models and data products are in the [data dictionary](docs/data_dictionary.md). They were cross-checked against the supplied CSV files. For example, `fact_viewing_events` should have 32,355 rows (one per distinct `view_id`) and `dim_subscriber` should have 2,500 (one per distinct `subscriber_id`).
+- **Raw tables:** the row counts should match the nine-row table at line 35 of `verification_results.txt`.
 
 ## Dashboard
 
-Chart explanations are in the team's final report.
+The [Superset dashboard](https://i320d-superset.ischool.utexas.edu/superset/dashboard/p/wjbOVGZ10y7/) shows our team's charts and our final report has the explanations.
 
 ## Credentials
 
