@@ -3,8 +3,8 @@ WITH enrollments AS (
         subscriber_package_id,
         subscriber_id,
         package_id,
-        start_date,
-        end_date
+        start_date_key AS start_date,
+        end_date_key AS end_date
     FROM {{ ref('dim_subscriber_addons') }}
 ),
 
