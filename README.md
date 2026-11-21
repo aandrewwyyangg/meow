@@ -1,65 +1,163 @@
-# I320 Data Engineering - Final Project Dataset
-## Entertainment (Streaming) | Team: Meow
+# Team Meow: Streaming Subscription Data Pipeline
 
-### The assignment brief
-> This will be focused on the streaming service packages customers have, what they are viewing, and what level of subscriptions.
+Final project presented by Team Meow! The pipeline loads a streaming service's raw CSV files into PostgreSQL, models them as a star schema with dbt, and builds reporting views for Superset.
 
-**Stakeholders you are building for:** Subscriber growth, content strategy, packaging/pricing, and retention teams.
+## Industry problem
 
-**Data window:** Viewing events from 2026-07-01 to 2026-10-31; subscriptions and plan history from 2019.
+A subscription streaming service wants to know how customers use its plans and add-on packages, what they watch, and how viewing relates to plan changes and cancellations. The results are meant for the subscriber growth, content strategy, packaging and pricing, and retention teams.
 
-**"Today" for this project:** treat **2026-10-31** as the current date for any as-of logic.
+## Objectives
 
-### Analytical requirements (restate these in your own words in Section 2 of your report)
-1. Subscription levels: How many subscribers are on each plan level and add-on package, and how have plan changes (upgrades/downgrades) moved over time?
-2. Viewing: What are subscribers watching - hours and sessions by genre, content type, device, plan level, and month?
-3. Package value: Do add-on package holders actually watch package content, and which packages are under-used?
-4. Opportunity and risk: Which subscribers on a lower plan show heavy engagement (upgrade candidates), and what do cancelled subscribers look like?
+1. **Subscription levels:** count subscribers on each plan and each add-on package, and track upgrades and downgrades over time.
+2. **Viewing:** measure hours and sessions by genre, content type, device, plan, and month.
+3. **Package value:** check whether add-on holders watch the content in their packages and find under-used packages.
+4. **Opportunity and risk:** find subscribers on lower plans with heavy viewing (upgrade candidates) and describe cancelled subscribers.
 
-### What is in this package
-```
-entertainment_meow/
-  README.md                         <- this file
-  data/                             <- 9 CSV files (UTF-8, comma-delimited, header row)
-  starter/
-    01_create_staging_starter.sql   <- example staging DDL (ONE table)
-    02_load_starter.psql            <- example psql \copy load (ONE table)
-    03_verify_starter.sql           <- verification / profiling queries
-    04_dbt_sources_starter.yml      <- example dbt source declaration
-```
+## Team
 
-| File | What it contains |
+| Name | GitHub |
 |---|---|
-| `data/addon_packages.csv` | Optional add-on packages with price. |
-| `data/content_catalog.csv` | Titles with type, genre, rating, runtime, and the add-on package (if any) that contains them. |
-| `data/devices.csv` | Viewing device types. |
-| `data/genres.csv` | Genres used to classify titles. |
-| `data/plan_history.csv` | Every plan a subscriber has been on, with start and end dates. |
-| `data/subscriber_addons.csv` | Add-on packages a subscriber has held, with start/end dates. |
-| `data/subscribers.csv` | Streaming customers with signup, status, country, and current plan. |
-| `data/subscription_plans.csv` | Plan levels with price, streams, resolution, and ads flag. |
-| `data/viewing_events.csv` | Each viewing session with start time, minutes watched, and completion. |
+| Caitlyn Pratt | caitlyn-p |
+| Inchara Kashyap | inchara-kashyap |
+| Edward Lin | eddiehlin |
+| Andrew Yang | aandrewwyyangg |
 
-### Read this before you start
-* **All data is synthetic.** Names, e-mails, phone numbers and identifiers are invented. E-mails use the reserved `example.com` domain.
-* **Nothing is labelled for you.** The files are not marked as "fact" or "dimension". Deciding what the **grain** is, which file(s) are fact tables, which are dimensions, which are bridges or lookups, and how the files relate is **your job** - and a core part of your grade. Start by reading headers, sampling rows, and testing which columns the files have in common.
-* **The files share identifiers.** Columns with the same name/format across files are how the files connect. Verify every join: check cardinality (1:1, 1:many, many:many) before you trust a count.
-* **The data is realistic, not pristine.** Expect nulls, inconsistent text values, and repeated rows. Detect them with queries, decide how to handle them, and document your decisions in your report (Sections 3 and 7). Do not silently delete rows - show your evidence.
-* Some NULLs are *meaningful* (they describe a real business situation) and some are *defects*. Part of the work is telling them apart.
+## Data sources
 
-### Quick start
-```bash
-# 1. create your GitHub repo, then copy this folder's /data and /starter into it
-# 2. from the project root:
-psql -h <HOST> -U <YOUR_ROLE> -d dataeng -f starter/01_create_staging_starter.sql
-psql -h <HOST> -U <YOUR_ROLE> -d dataeng -f starter/02_load_starter.psql
-psql -h <HOST> -U <YOUR_ROLE> -d dataeng -f starter/03_verify_starter.sql
+9 CSV files are found in `seeds/`. Each file has a header row. Viewing events cover 2026-07-01 to 2026-10-31. Subscriptions and plan history go back to 2019. The project's as-of date is 2026-10-31.
+
+| File | Rows | One row per |
+|---|---|---|
+| subscribers.csv | 2,506 | subscriber record (2,500 distinct subscriber IDs) |
+| subscription_plans.csv | 4 | plan |
+| plan_history.csv | 3,594 | period a subscriber spent on a plan |
+| addon_packages.csv | 6 | add-on package |
+| subscriber_addons.csv | 1,995 | add-on enrollment |
+| content_catalog.csv | 400 | title |
+| genres.csv | 12 | genre |
+| devices.csv | 8 | device type |
+| viewing_events.csv | 32,395 | source viewing record (32,355 distinct view IDs) |
+
+Column definitions, keys, and data quality notes are in [data_dictionary.md](data_dictionary.md).
+
+## Prerequisites
+
+- Access to the course PostgreSQL server: host `info-smith-i320.inf.utexas.edu`, port `5432`, database `postgres`.
+- The UT VPN (`vpn.utexas.edu`) if off campus.
+- A JupyterHub account.
+- A Superset account.
+
+## Pipeline
+
 ```
-Then extend the snippets to cover **all** files, build your own dbt models (staging -> star schema -> data products), and visualize in Superset.
+seeds/*.csv
+  -> starter_files/02_load_starter.psql (psql \copy)
+  -> raw tables in schema cmp4754
+  -> models/dimensions (dbt views: the dimensions and fact_viewing_events)
+  -> models/products (dbt views for the business questions)
+  -> Superset charts
+```
 
-### Repository hygiene (from the project guide)
-* Do **not** commit passwords, tokens, or `profiles.yml`. Add them to `.gitignore`.
-* Commit the data only if your instructor allows it; otherwise document how to place it locally.
+The conceptual and physical ER diagrams of the star schema are in `diagrams/`.
 
-### Report checklist reminder
-Introduction + restated requirements -> source documentation (conceptual & physical ER) -> staging DDL & `\copy` script with verification -> grain/facts/dimensions + lineage diagram -> star schema evidence -> your own dbt models -> data products -> Superset dashboard + interpretation -> reflection -> repo link.
+## Repository layout
+
+```
+meow/
+  README.md
+  data_dictionary.md             tables, models, columns, and data quality notes
+  seeds/                         the 9 source CSV files
+  starter_files/
+    01_create_staging_starter.sql    creates schema cmp4754 and the 9 raw tables
+    02_load_starter.psql             loads the CSVs with \copy
+    03_verify_starter.sql            row counts, sample rows, null, duplicate, and orphan checks
+  verification_results.txt       saved output of 03_verify_starter.sql
+  models/
+    staging/                     stg_ views over the raw tables
+    dimensions/                  sources.yml, the dimension models, and the fact table
+    products/                    data products for the business questions
+  diagrams/                      conceptual and physical ER diagrams
+  dbt_project.yml
+  analyses/ macros/ snapshots/ tests/
+```
+
+## How to reproduce
+
+These steps build a fresh copy of the project in your own schema. In every command, replace `YOUR_DB_USER` with the database username you normally connect with and `YOUR_SCHEMA` with your own schema name.
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/aandrewwyyangg/meow.git
+cd meow
+```
+
+Run every command below from this `meow` folder.
+
+### 2. Point the scripts and dbt sources at your schema
+
+The scripts and `models/dimensions/sources.yml` use schema `cmp4754`, where our team loaded the data. Replace it with your schema in your local copy:
+
+```bash
+sed -i 's/cmp4754/YOUR_SCHEMA/g' starter_files/01_create_staging_starter.sql starter_files/02_load_starter.psql starter_files/03_verify_starter.sql models/dimensions/sources.yml
+```
+
+The raw tables, `sources.yml`, and your dbt profile (step 4) must all use this same schema. The dimensional models read the raw tables through `source()`, which uses the schema in `sources.yml`. The `stg_` views read them through `ref()` to the seed names, which resolve to tables with those names in the dbt target schema. The nine tables loaded in step 3 have exactly those names.
+
+### 3. Create, load, and verify a fresh copy of the raw tables
+
+```bash
+psql -h info-smith-i320.inf.utexas.edu -p 5432 -U YOUR_DB_USER -d postgres -f starter_files/01_create_staging_starter.sql
+psql -h info-smith-i320.inf.utexas.edu -p 5432 -U YOUR_DB_USER -d postgres -f starter_files/02_load_starter.psql
+psql -h info-smith-i320.inf.utexas.edu -p 5432 -U YOUR_DB_USER -d postgres -f starter_files/03_verify_starter.sql
+```
+
+`01_create_staging_starter.sql` creates the schema and the nine raw tables. It drops and recreates `subscribers`, so run it only on a fresh schema.
+
+In `03_verify_starter.sql`, the first four queries are the instructor's starter examples against `staging.subscribers`. The project's checks start at the section `ROW COUNTS FOR ALL NINE TABLES`. In the output, that section begins with the nine-row table of row counts, which matches the table that starts at line 35 of `verification_results.txt`. Compare the rest of the output from that point.
+
+### 4. Configure dbt
+
+`dbt_project.yml` uses a profile named `meow`. Add it to `~/.dbt/profiles.yml`. That file stays outside the repository and must never be committed. Set `schema` to the schema that holds the nine raw tables.
+
+```yaml
+meow:
+  target: dev
+  outputs:
+    dev:
+      type: postgres
+      host: info-smith-i320.inf.utexas.edu
+      port: 5432
+      user: YOUR_DB_USER
+      password: YOUR_PASSWORD
+      dbname: postgres
+      schema: YOUR_SCHEMA
+      threads: 1
+```
+
+Check the connection:
+
+```bash
+dbt debug
+```
+
+### 5. Build and test the models
+
+```bash
+dbt run
+dbt test
+```
+
+`dbt run` builds every model in `models/` as a view in your schema: the `stg_` views, the dimensional models, and the data products. `dbt test` runs the project's data tests. Do not run `dbt seed` or `dbt build` for this recipe. `dbt build` includes `dbt seed`, and seeding would write the CSVs into tables with the same names as the raw tables you loaded in step 3.
+
+### 6. Check the results
+
+- **Raw tables:** the row counts should match the nine-row table at line 35 of `verification_results.txt`.
+
+## Dashboard
+
+The [Superset dashboard](https://i320d-superset.ischool.utexas.edu/superset/dashboard/p/wjbOVGZ10y7/) shows our team's charts and our final report has the explanations.
+
+## Credentials
+
+No passwords or connection strings with credentials are stored in this repository. Keep your password in `~/.dbt/profiles.yml` or enter it when psql asks.
